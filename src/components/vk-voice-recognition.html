@@ -1,0 +1,74 @@
+<script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<dom-module id="vk-voice-recognition">
+    <style>
+    </style>
+    <template>
+        <template is="dom-if" if="{{ provideInput }}">
+          <input id="geocoder-input" value="{{ searchQuery::change }}"></input>
+        </template>
+        <iron-ajax
+            id="geocoder"
+            handle-as="json"
+            on-response="_handleResponse"
+            debounce-duration="300"
+            content-type="application/json; charset=utf-8"
+            method="GET"
+        </iron-ajax>
+    </template>
+
+    <script type="text/javascript">
+
+    class VkVoiceRecognition extends Polymer.Element {
+      static get is() {
+        return 'vk-voice-recognition';
+      }
+
+      static get properties() {
+        return {
+          recognizedPhraseText: {
+            type: String,
+            notify: true,
+            readOnly: true
+          },
+          isListening: {
+            type: Boolean,
+            value: false,
+            observer: '_listenStateChanged',
+            readOnly: true
+          },
+          provideInput: {
+            type: Boolean,
+            value: false
+          }
+        };
+      };
+
+      connectedCallback() {
+        console.log(annyang);
+        if (annyang) {
+          annyang.addCallback('result', this._onResult, this);
+        }
+      }
+
+      startListening() {
+        annyang.start({ autoRestart: false, continuous: false });
+        this._setIsListening(true);
+      }
+
+      _onResult(res) {
+        console.log(res[0]);
+        this._setIsListening(false);
+        this._setRecognizedPhraseText(res[0]);
+      }
+
+      _listenStateChanged(newState, oldState) {
+        console.log(newState);
+      }
+    }
+
+
+      window.customElements.define(VkVoiceRecognition.is, VkVoiceRecognition);
+    </script>
+</dom-module>
