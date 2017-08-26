@@ -1,0 +1,85 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<dom-module id="vk-geocoder">
+    <style>
+    </style>
+    <template>
+        <template is="dom-if" if="{{ provideInput }}">
+          <input id="geocoder-input" value="{{ searchQuery::change }}"></input>
+        </template>
+        <iron-ajax
+            id="geocoder"
+            handle-as="json"
+            on-response="_handleResponse"
+            debounce-duration="300"
+            content-type="application/json; charset=utf-8"
+            method="GET"
+        </iron-ajax>
+    </template>
+
+    <script type="text/javascript">
+
+    class VkGeocoder extends Polymer.Element {
+      static get is() {
+          return 'vk-geocoder';
+      }
+
+      static get properties() {
+        return {
+          searchQuery: {
+            type: String,
+            observer: '_searchQueryUpdated',
+            notify: true
+          },
+          geocoderResult: {
+            type: Array,
+            notify: true,
+            readOnly: true
+          },
+          provideInput: {
+            type: Boolean,
+            value: false
+          }
+        };
+      };
+
+      _searchQueryUpdated(newSearchTerm, oldSearchTerm) {
+
+        console.log(newSearchTerm);
+        console.log(oldSearchTerm);
+
+        if (newSearchTerm) {
+          const params = {
+            'api_key': "mapzen-rqEDCPe",
+            'text': newSearchTerm,
+            'size': 3,
+            'boundary.country': 'US',
+            'boundary.rect.min_lat': 32.52713149992711,
+            'boundary.rect.min_lon': -117.34359741210939,
+            'boundary.rect.max_lat': 32.931470839102154,
+            'boundary.rect.max_lon': -116.76544189453124,
+            'focus.point.lat': 32.7157,
+            'focus.point.lon': -117.1611
+          }
+          this.$.geocoder.url = "http://search.mapzen.com/v1/search";
+          this.$.geocoder.params = params;
+          this.$.geocoder.generateRequest();
+        }
+      }
+
+      _handleResponse(request) {
+        const response = this.$.geocoder.lastResponse;
+        console.log(response);
+        const coordinates = response.features[0].geometry.coordinates;
+        const result = {
+            // explicit as hell.
+            lonLat: [coordinates[0], coordinates[1]],
+            zoom: 11
+        };
+        this._setGeocoderResult(result);
+      }
+    }
+
+      window.customElements.define(VkGeocoder.is, VkGeocoder);
+    </script>
+</dom-module>

@@ -29,14 +29,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template>
     <style>
       :host {
-        --app-primary-color: #4285f4;
+        --app-primary-color: red;
         --app-secondary-color: black;
-
         display: block;
-      }
-
-      app-drawer-layout:not([narrow]) [drawer-toggle] {
-        display: none;
+        height: 100vh;
+        width: 100%;
       }
 
       app-header {
@@ -47,23 +44,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       app-header paper-icon-button {
         --paper-icon-button-ink-color: white;
       }
-
-      .drawer-list {
-        margin: 0 20px;
-      }
-
-      .drawer-list a {
-        display: block;
-        padding: 0 16px;
-        text-decoration: none;
-        color: var(--app-secondary-color);
-        line-height: 40px;
-      }
-
-      .drawer-list a.iron-selected {
-        color: black;
-        font-weight: bold;
-      }
     </style>
 
     <app-location route="{{route}}" url-space-regex="^[[rootPath]]"></app-location>
@@ -73,35 +53,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         data="{{routeData}}"
         tail="{{subroute}}"></app-route>
 
-    <app-drawer-layout fullbleed narrow="{{narrow}}">
-      <!-- Drawer content -->
-      <app-drawer id="drawer" slot="drawer" swipe-open="[[narrow]]">
-        <app-toolbar>Menu</app-toolbar>
-        <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-          <a name="view-main" href="[[rootPath]]view-main">View Main</a>
-        </iron-selector>
-      </app-drawer>
-
       <!-- Main content -->
-      <app-header-layout has-scrolling-region>
 
-        <app-header slot="header" condenses reveals effects="waterfall">
+        <app-header slot="header">
           <app-toolbar>
-            <paper-icon-button icon="my-icons:menu" drawer-toggle></paper-icon-button>
-            <div main-title>My App</div>
+            <div main-title>Vk Map</div>
           </app-toolbar>
         </app-header>
-
-        <iron-pages
-            selected="[[page]]"
-            attr-for-selected="name"
-            fallback-selection="404"
-            role="main">
-          <vk-view-main name="view-main"></vk-view-main>
-          <vk-404 name="404"></vk-404>
-        </iron-pages>
-      </app-header-layout>
-    </app-drawer-layout>
+        <vk-view-main></vk-view-main>
   </template>
 
   <script>
@@ -134,10 +93,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // Deault to 'view1' in that case.
         this.page = page || 'view-main';
 
-        // Close a non-persistent drawer when the page & route are changed.
-        if (!this.$.drawer.persistent) {
-          this.$.drawer.close();
-        }
       }
 
       _pageChanged(page) {

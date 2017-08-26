@@ -15,7 +15,8 @@
     "paper-icon-button": "PolymerElements/paper-icon-button#^2.0.0",
     "px-map-gl": "git://github.com/mrmaksimize/px-map-gl#master",
     "polymer": "Polymer/polymer#^2.0.0",
-    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0",
+    "lodash": "^4.17.4"
   },
   "resolutions": {
     "polymer": "^2.0.0"

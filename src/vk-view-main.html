@@ -9,23 +9,48 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="./components/vk-geocoder.html">
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="vk-view-main">
   <template>
     <style include="shared-styles">
       :host {
-        display: block;
-
-        padding: 10px;
+        display: flex;
+        padding: 0px;
+        height: 100vh;
+        width: 100%;
       }
+      #main-map-container {
+        background: blue;
+        display: flex;
+        height: 100vh;
+        width: 100%;
+        min-height: 100%;
+      }
+      px-map-gl {
+        display: flex;
+        width: 100vh;
+      }
+
     </style>
 
-    <div class="card">
-      <div class="circle">1</div>
-      <h1>View One</h1>
-      <p>Ut labores minimum atomorum pro. Laudem tibique ut has.</p>
-      <p>Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Cu mei vide viris gloriatur, at populo eripuit sit.</p>
+    <div id="main-map-container">
+        <vk-geocoder
+            provide-input
+            search-query="202 c street">
+        </vk-geocoder>
+    <!--<px-map-gl zoom="14"
+                bearing="0"
+                pitch="0"
+                flex-to-size
+                disable-attribution-control
+                style="mapbox://styles/mapbox/dark-v9"
+                mgl-token="pk.eyJ1IjoiYXZlZHkiLCJhIjoiY2l2NDQ1bG9oMDA0aDJ0cWx4ZW50aTJkbiJ9.WPiw3lvIkzQcABAfJj2MBQ"
+                lat="32.7157"
+                lng="-117.1611">
+    </px-map-gl>-->
+
     </div>
   </template>
 
