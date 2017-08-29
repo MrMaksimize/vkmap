@@ -1,6 +1,12 @@
 <!-- Controll all the others -->
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+
+<link rel="import" href="./vk-geocoder.html">
+<link rel="import" href="./vk-query-deconstructor.html">
+<link rel="import" href="./vk-voice-recognition.html">
+<link rel="import" href="./vk-hal-button.html">
+
 <dom-module id="vk-voice-search">
 <template>
     <style include="shared-styles">
@@ -11,29 +17,6 @@
         #vc-container {
             text-align: center;
         }
-        .pulse-button {
-            margin-left: auto;
-            margin-right: auto;
-            position: relative;
-            width: 100px;
-            height: 100px;
-            border: none;
-            box-shadow: 0 0 0 0 rgba(232, 76, 61, 0.7);
-            border-radius: 50%;
-            background-color: blue;
-            background-image: url('/images/hal.png');
-            background-size:cover;
-            background-repeat: no-repeat;
-            /*-webkit-animation: pulse 1.25s infinite cubic-bezier(0.66, 0, 0, 1);
-            -moz-animation: pulse 1.25s infinite cubic-bezier(0.66, 0, 0, 1);
-            -ms-animation: pulse 1.25s infinite cubic-bezier(0.66, 0, 0, 1);
-            animation: pulse 1.25s infinite cubic-bezier(0.66, 0, 0, 1);*/
-        }
-
-        @-webkit-keyframes pulse {to {box-shadow: 0 0 0 45px rgba(232, 76, 61, 0);}}
-        @-moz-keyframes pulse {to {box-shadow: 0 0 0 45px rgba(232, 76, 61, 0);}}
-        @-ms-keyframes pulse {to {box-shadow: 0 0 0 45px rgba(232, 76, 61, 0);}}
-        @keyframes pulse {to {box-shadow: 0 0 0 45px rgba(232, 76, 61, 0);}}
 
         #vc-feedback {
             background: white;
@@ -46,8 +29,12 @@
     </style>
 
     <div id="vc-container" class="col12 clearfix">
-        <div class="col8 center clearfix pad2 margin2 pulse-button"></div>
-        <div id="vc-feedback" class=""></div>
+        <div id="vc-button-container" class="col12 clearfix">
+            <vk-hal-button state="[[ state ]]" on-click="_changeState"></vk-hal-button>
+        </div>
+        <div id="vc-feedback-input-container" class="col12 clearfix">
+          <input id="vc-feedback" class=""></input>
+        </div>
     </div>
     </template>
 
@@ -61,13 +48,26 @@
 
             static get properties() {
                 return {
-                    isWorking: {
-                        type: Boolean,
-                        value: false,
-                        notify: true
-                    }
+                  state: {
+                    type: String,
+                    value: 'default',
+                    notify: true,
+                  }
                 };
             };
+
+            _changeState(e) {
+                switch(this.state) {
+                  case 'default':
+                    this.set('state', 'listening');
+                    break;
+                  case 'listening':
+                  case 'working':
+                    this.set('state', 'default');
+                    break;
+                }
+            }
+
         }
 
         window.customElements.define(VkVoiceSearch.is, VkVoiceSearch);
