@@ -6,16 +6,8 @@
     </style>
     <template>
         <template is="dom-if" if="{{ provideInput }}">
-          <input id="geocoder-input" value="{{ searchQuery::change }}"></input>
+          <input id="" value="{{ searchQuery::change }}"></input>
         </template>
-        <iron-ajax
-            id="geocoder"
-            handle-as="json"
-            on-response="_handleResponse"
-            debounce-duration="300"
-            content-type="application/json; charset=utf-8"
-            method="GET"
-        </iron-ajax>
     </template>
 
     <script type="text/javascript">
@@ -27,7 +19,7 @@
 
       static get properties() {
         return {
-          recognizedPhraseText: {
+          recognizedPhrase: {
             type: String,
             notify: true,
             readOnly: true
@@ -38,6 +30,7 @@
             observer: '_listenStateChanged',
             readOnly: true
           },
+          // TODO - this should just be a display, not input.
           provideInput: {
             type: Boolean,
             value: false
@@ -60,11 +53,14 @@
       _onResult(res) {
         console.log(res[0]);
         this._setIsListening(false);
-        this._setRecognizedPhraseText(res[0]);
+        this._setRecognizedPhrase(res[0]);
       }
 
       _listenStateChanged(newState, oldState) {
-        console.log(newState);
+        this.dispatchEvent(
+                new CustomEvent('vk-voice-recognition-listening-state-change', {
+                    detail: {listenState: newState}}
+                ));
       }
     }
 

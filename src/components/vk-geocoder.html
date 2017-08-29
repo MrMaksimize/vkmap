@@ -10,6 +10,7 @@
         <iron-ajax
             id="geocoder"
             handle-as="json"
+            loading="{{ isWorking }}"
             on-response="_handleResponse"
             debounce-duration="300"
             content-type="application/json; charset=utf-8"
@@ -39,6 +40,11 @@
           provideInput: {
             type: Boolean,
             value: false
+          },
+          isWorking: {
+            type: Boolean,
+            value: false,
+            notify: true
           }
         };
       };

@@ -1,0 +1,62 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<dom-module id="vk-query-deconstructor">
+    <style>
+    </style>
+    <template>
+         <iron-ajax
+            id="ajax"
+            url="https://api.api.ai/v1/query?v=20150910"
+            handle-as="json"
+            on-response="_handleResponse"
+            loading="{{ isWorking }}"
+            debounce-duration="300"
+            content-type="application/json; charset=utf-8"
+            method="POST",
+            headers='{"Authorization": "Bearer 2ddcc06c5f9b4afcb7b7287b5c76db70"}'>
+        </iron-ajax>
+    </template>
+
+    <script type="text/javascript">
+
+    class VkQueryDeconstructor extends Polymer.Element {
+      static get is() {
+          return 'vk-query-deconstructor';
+      }
+
+      static get properties() {
+        return {
+          queryText: {
+            type: String,
+            observer: '_queryTextUpdated',
+            notify: true
+          },
+          result: {
+            type: Array,
+            notify: true,
+            readOnly: true
+          },
+          isWorking: {
+            type: Boolean,
+            notify: true,
+            value: false
+          }
+        };
+      };
+
+      _queryTextUpdated(newText, oldText) {
+
+        console.log(newText);
+        console.log(oldText);
+
+        if (newText) {
+        }
+      }
+
+      _handleResponse(request) {
+      }
+    }
+
+      window.customElements.define(VkQueryDeconstructor.is, VkQueryDeconstructor);
+    </script>
+</dom-module>

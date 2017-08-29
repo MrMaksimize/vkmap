@@ -10,6 +10,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="./components/vk-geocoder.html">
+<link rel="import" href="./components/vk-voice-recognition.html">
+<link rel="import" href="./components/vk-query-deconstructor.html">
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="vk-view-main">
@@ -40,6 +42,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             provide-input
             search-query="202 c street">
         </vk-geocoder>
+        <vk-voice-recognition
+            recognized-phrase="">
+        </vk-voice-recogntion>
+        <vk-query-deconstructor>
+        </vk-query-deconstructor>
     <!--<px-map-gl zoom="14"
                 bearing="0"
                 pitch="0"
